@@ -131,12 +131,14 @@ Run 'docker COMMAND --help' for more information on a command.
 
 The first command to run is `docker run hello-world`. When we run the command, following things happen in specific order.
 
+```
+docker run hello-world
+```
+
 1. The **Docker Client** sends the command to **Docker Server**.
 2. The server then checks for the image in the **Image Cache**.
-
-   * If it finds the image, it moves to step 3.
-   * If it does not find the image, it connects to **Docker Hub** and downloads the *image snapshot* into the Image Cache.
-
+   1. If it finds the image, it moves to step 3.
+   2. If it does not find the image, it connects to **Docker Hub** and downloads the *image snapshot* into the Image Cache.
 3. The Docker Server then *creates* the **Container** along with the commands.
 4. The Docker Server then *starts* the container.
 5. After that, the docker server stops the container or continually runs the container until it finishes.
