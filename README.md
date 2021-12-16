@@ -408,6 +408,12 @@ suman@ubuntu-local:~$
 **Note:** Once the default command for a container has been set, it cannot be replaced after creation. To get new default
 command, you MUST create a new container with the new default command.
 
+### 3.7 Restarting a stopped container
+
+We can easily start a stopped container, we can take its container id and run it with the `docker start` command.
+
+**Example:** `docker start -ai c167`
+
 
 
 
