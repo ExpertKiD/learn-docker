@@ -7,6 +7,19 @@
     2.1. [What are docker image and docker container?](#21-what-are-docker-image-and-container)<br/>    
 3. [Using the Docker Client](#3-using-the-docker-client)<br/>
     3.1. [Using the docker run command](#31-using-the-docker-run-command)<br/>
+    3.2 [docker run in detail](#32-docker-run-in-detail)<br/>
+    3.3 [List running containers](#33-list-running-containers)<br/>
+    3.4 [What docker run is equals to?](#34-what-docker-run-is-equals-to)<br/>
+    3.5 [Creating a container](#35-creating-a-container)<br/>
+    3.6 [Starting a container](#36-starting-a-container)<br/>
+    3.7 [Restarting a stoppped container](#37-restarting-a-stopped-container)<br/>
+    3.8 [Removing a stopped container](#38-removing-a-stopped-container)<br/>
+        3.8.1 [Remove using docker system prune command](#381-remove-using-docker-system-prune-command)<br/>
+        3.8.2 [Removing container using docker container rm commmand](#382-removing-container-using-docker-container-rm-command)<br/>
+    3.9 [Retrieving logs from a container](#39-retrieving-logs-from-a-container)<br/>
+    3.10 [Stopping a container](#310-stopping-a-container)<br/>
+        3.10.1 [Stopping using docker stop command](#3101-stopping-using-docker-stop-command)<br/>
+        3.10.2 [Stopping using docker kill command](#3102-stopping-using-docker-kill-command)<br/>
     
 
 ## 1. Why use Docker?
