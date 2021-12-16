@@ -2,11 +2,10 @@
 
 ## Table of Contents
 
-1. [Why use Docker?](#1-why-use-docker)
-2. [Introduction to Docker](#2-introduction-to-docker)
-3. [Using the Docker Client](#3-using-the-docker-client)
-
-    3.1. [Using the docker run command](#31-using-the-docker-run-command)
+1. [Why use Docker?](#1-why-use-docker)<br/>
+2. [Introduction to Docker](#2-introduction-to-docker)<br/>
+3. [Using the Docker Client](#3-using-the-docker-client)<br/>
+    3.1. [Using the docker run command](#31-using-the-docker-run-command)<br/>
 
 ## 1. Why use Docker?
 
