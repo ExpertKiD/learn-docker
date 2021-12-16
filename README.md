@@ -4,6 +4,7 @@ ___
 ##Table of Contents
 
 [1. Why use Docker?](#1-why-use-docker)
+
 [2. Introduction to Docker](#2-introduction-to-docker)
 
 ## 1. Why use Docker?
@@ -30,7 +31,7 @@ The first command to run is `docker run hello-world`. When we run the command, f
 2. The server then checks for the image in the **Image Cache**.
 
 
-    i. If it finds the image, it moves to step 3.
-    ii. If it does not find the image, it connects to **Docker Hub** and downloads the *image snapshot* into the Image Cache.
+    a. If it finds the image, it moves to step 3.
+    b. If it does not find the image, it connects to **Docker Hub** and downloads the *image snapshot* into the Image Cache.
 
 
