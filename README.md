@@ -234,5 +234,19 @@ bd111be11e98   hello-world    "/hello"                 38 minutes ago   Exited (
 442381989cb2   mysql:latest   "docker-entrypoint.s…"   5 months ago     Exited (0) 5 months ago               ubuntu-mysql
 ```
 
+### 3.4 What `docker run` is equals to?
+
+`docker run` = `docker create` + `docker start`
+
+As seen above, `docker run` is the summation of two commands: `docker create` and `docker start`.
+
+**Simple Syntax:** `docker create [image-name]`
+
+**Simple Syntax:** `docker start [container-id]`
+
+
+
+
+
 
 
