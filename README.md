@@ -1,7 +1,6 @@
 # Learn Docker in a day
 
-## Table of Contents<>
-<>
+## Table of Contents
 
 1. [Why use Docker?](#1-why-use-docker)<br/>
 2. [Introduction to Docker](#2-introduction-to-docker)<br/> 
