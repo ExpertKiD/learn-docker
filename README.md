@@ -505,6 +505,52 @@ round-trip min/avg/max = 54.950/56.233/57.878 ms
 **Note:** Getting the logs from a container does not run the container if it has been stopped.It only retrieves the old
 logs completely upto this point.
 
+### 3.10. Stopping a container
+
+We can stop docker container in one of two ways: We can stop using:
+
+1. `docker stop` command
+2. `docker kill` command
+
+### 3.10.1. Stopping using `docker stop` command
+
+The `docker stop` command stops a running container. It sends the SIGTERM (Terminate Signal) to the process. It allows and
+waits for 10 second (default) for the process to exit. After default time i.e. 10 second has passed, the stop command will
+send the `docker kill` command to the container process and exit it immediately. We can pass a different time to kill as
+well.
+
+**Syntax:** `docker stop [OPTIONS] CONTAINER [CONTAINER...]`
+```
+docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+Stop one or more running containers
+
+Options:
+-t, --time int   Seconds to wait for stop before killing it (default 10)
+```
+
+**Example:** `docker stop c755`
+
+#### 3.10.2. Stopping using `docker kill` command
+
+The `docker kill` command stops a running container. It sends the SIGKILL (KILL Signal) to the process. It immediately 
+kills the process and stops it.
+
+**Syntax:** `docker kill [OPTIONS] CONTAINER [CONTAINER...]`
+```
+Usage:  docker kill [OPTIONS] CONTAINER [CONTAINER...]
+
+Kill one or more running containers
+
+Options:
+  -s, --signal string   Signal to send to the container (default "KILL")
+```
+
+**Example:** `docker kill c755`
+
+
+
+
 
 
 
