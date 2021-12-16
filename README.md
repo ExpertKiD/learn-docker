@@ -244,6 +244,26 @@ As seen above, `docker run` is the summation of two commands: `docker create` an
 
 **Simple Syntax:** `docker start [container-id]`
 
+### 3.5 Creating a container
+
+You can create a docker container using the `docker create` command.
+
+Syntax: `docker create [OPTIONS] IMAGE [COMMAND] [ARG...]`
+
+Example: `docker create busybox echo hello world`
+
+```
+suman@ubuntu-local:~$ docker create busybox echo hello world
+c167c5073d9a58e1b6aaee2caba1806243961ad3316ffd59f545eaebb55e08d6
+suman@ubuntu-local:~$ 
+```
+
+Creating the container only generates the container and displays the container id. To start the container, we use 
+`docker start` command. And, that's what we'll see next.
+
+
+
+
 
 
 
