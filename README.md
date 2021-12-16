@@ -211,7 +211,28 @@ The syntax for `docker run` is as below:
 The example above runs `busybox` with the command `echo` and arguments `hello world`. The `echo` command overrides the 
 default command placed in the image and run that command instead.
 
+### 3.3 List running containers
 
+Commands:<br/>
+`docker ps` - list all running containers.
+`docker ps -a` - list all running and exited containers.
+
+The command for listing all running container is `docker ps`. If you want to list all containers, attach `-a` or `--all`
+flag to `docker ps`.
+
+**Example:**
+
+```
+suman@ubuntu-local:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+suman@ubuntu-local:~$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS                      PORTS     NAMES
+bd111be11e98   hello-world    "/hello"                 38 minutes ago   Exited (0) 38 minutes ago             elastic_dewdney
+2a9410193ee6   busybox        "ping google.com"        2 hours ago      Exited (137) 2 hours ago              musing_kare
+60e9d4e6d4a5   busybox        "echo hi there"          2 hours ago      Exited (0) 2 hours ago                priceless_pare
+8ae0ff0bbb55   redis          "docker-entrypoint.s…"   7 weeks ago      Exited (0) 7 weeks ago                redis
+442381989cb2   mysql:latest   "docker-entrypoint.s…"   5 months ago     Exited (0) 5 months ago               ubuntu-mysql
+```
 
 
 
