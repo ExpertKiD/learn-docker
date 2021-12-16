@@ -416,6 +416,60 @@ We can easily start a stopped container, we can take its container id and run it
 
 
 
+### 3.8 Removing a stopped container
+
+To remove a stopped container, we can run one of two commands:
+
+#### 3.8.1 Remove using `docker system prune` command
+
+To remove unused docker images and containers all at once, run the below command.
+
+**Syntax:** `docker system prune [OPTIONS]`
+
+```
+Usage:  docker system prune [OPTIONS]
+
+Remove unused data
+
+Options:
+  -a, --all             Remove all unused images not just dangling ones
+      --filter filter   Provide filter values (e.g. 'label=<key>=<value>')
+  -f, --force           Do not prompt for confirmation
+      --volumes         Prune volumes
+```
+
+**Example:** `docker system prune`
+
+Once you select yes, all stopped container and their associated images will be cleared.
+
+#### 3.8.2 Removing container using `docker container rm` command
+
+To remove stopped containers, run the `docker container rm` command follwed by container id or name.
+
+**Syntax:** `docker container rm [OPTIONS] CONTAINER [CONTAINER...]`
+
+```
+Usage:  docker container rm [OPTIONS] CONTAINER [CONTAINER...]
+
+Remove one or more containers
+
+Options:
+  -f, --force     Force the removal of a running container (uses SIGKILL)
+  -l, --link      Remove the specified link
+  -v, --volumes   Remove anonymous volumes associated with the container
+```
+
+**Example:**
+```
+suman@ubuntu-local:~$ docker container rm inspiring_booth 
+inspiring_booth
+suman@ubuntu-local:~$ 
+```
+
+When the container is successfully removed, the container id or name is displayed back.
+
+
+
 
 
  
