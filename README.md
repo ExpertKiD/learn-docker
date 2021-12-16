@@ -4,6 +4,9 @@
 
 1. [Why use Docker?](#1-why-use-docker)<br/>
 2. [Introduction to Docker](#2-introduction-to-docker)<br/>
+ 
+    2.1. [What are docker image and docker container?](#21-what-are-docker-image-and-container)<br/>
+
 3. [Using the Docker Client](#3-using-the-docker-client)<br/>
     3.1. [Using the docker run command](#31-using-the-docker-run-command)<br/>
 
@@ -22,6 +25,25 @@ Docker is a platform or ecosystem around creating and running containers. The ec
 4. Docker Images
 5. Docker Containers
 6. Docker Hub
+
+### 2.1. What are Docker Image and Container?
+
+Linux OS has two features that really make docker happen. The two features are:
+
+1. NameSpacing
+   - **Definition** - Isolating resources per process (or group of processes)
+
+2. Control Groups(cgroups)
+   - **Definition** - Limit amount of resources used per process.
+
+You use these two features to separate the file system and the physical resources into small modules or *containers*.
+
+Hence, an *image* is a single file with all the dependencies and configuration required to run a program. It includes the
+*file snapshot* and the *startup command* to execute when starting the container. A container then, is an instance of an
+image that runs a program. The container is isolated from the main operating system and has its own resources and filesystem.
+
+**Note:** Containers can only exist on Linux. So, when you install docker on your system, you are actually installing a Linux
+VM if you are not using Linux as OS.
 
 ## 3. Using the Docker Client
 
@@ -174,5 +196,8 @@ Share images, automate workflows, and more with a free Docker ID:
 
 For more examples and ideas, visit: https://docs.docker.com/get-started/
 ```
+
+
+###
 
 
