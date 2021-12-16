@@ -21,6 +21,7 @@
     3.10 [Stopping a container](#310-stopping-a-container)<br/>
         3.10.1 [Stopping using docker stop command](#3101-stopping-using-docker-stop-command)<br/>
         3.10.2 [Stopping using docker kill command](#3102-stopping-using-docker-kill-command)<br/>
+    3.11 [Executing command in running container](#311-executing-command-in-running-container)<br/>
     
 
 ## 1. Why use Docker?
@@ -562,7 +563,38 @@ Options:
 
 **Example:** `docker kill c755`
 
-### 3.11. 
+### 3.11. Executing command in running container
+
+We can run commands inside of a running container using the `docker exec` command.
+
+**Syntax:** `docker exec `
+
+```
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+
+Options:
+  -d, --detach               Detached mode: run command in the background
+      --detach-keys string   Override the key sequence for detaching a container
+  -e, --env list             Set environment variables
+      --env-file list        Read in a file of environment variables
+  -i, --interactive          Keep STDIN open even if not attached
+      --privileged           Give extended privileges to the command
+  -t, --tty                  Allocate a pseudo-TTY
+  -u, --user string          Username or UID (format: <name|uid>[:<group|gid>])
+  -w, --workdir string       Working directory inside the container
+```
+
+To run commands in the running container, and get input in terminal, you can use the `-i` and `-t` flags. You can combine 
+the flags as `-it` as well.
+
+**Example:** `docker exec -it redis-container bash`
+
+The above command would run the bash terminal inside the container. Form there, you can run commands inside the bash terminal
+attached to run any commands you like. Make sure you use the `-it` flag. The `-i` flags connects the STDIN channel to your
+terminal. And, the `-t` flag makes the STDIN channel more pretty and readable.
+
 
 
 
