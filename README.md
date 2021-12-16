@@ -4,9 +4,10 @@
 
 1. [Why use Docker?](#1-why-use-docker)<br/>
 2. [Introduction to Docker](#2-introduction-to-docker)<br/> 
-    2.1. [What are docker image and docker container?](#21-what-are-docker-image-and-container)<br/>
+    2.1. [What are docker image and docker container?](#21-what-are-docker-image-and-container)<br/>    
 3. [Using the Docker Client](#3-using-the-docker-client)<br/>
     3.1. [Using the docker run command](#31-using-the-docker-run-command)<br/>
+    
 
 ## 1. Why use Docker?
 
@@ -151,6 +152,9 @@ Run 'docker COMMAND --help' for more information on a command.
 
 The first command to run is `docker run hello-world`. When we run the command, following things happen in specific order.
 
+**Syntax:** `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`
+
+**Example:**
 ```
 docker run hello-world
 ```
@@ -196,6 +200,18 @@ For more examples and ideas, visit: https://docs.docker.com/get-started/
 ```
 
 
-###
+### 3.2 `docker run` in detail
+
+The syntax for `docker run` is as below:
+
+**Syntax:** `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`
+
+**Example:** `docker run busybox echo hello world`
+
+The example above runs `busybox` with the command `echo` and arguments `hello world`. The `echo` command overrides the 
+default command placed in the image and run that command instead.
+
+
+
 
 
