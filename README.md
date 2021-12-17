@@ -26,13 +26,16 @@
     4.2. [Building the image](#42-building-the-image)<br/>
     4.3. [Running the created image](#43-running-the-created-image)<br/>
     4.4. [Tagging the image](#44-tagging-the-image)<br/>
+5. [Making a real world project in Docker](#5-making-a-real-world-project-in-docker)<br/>
+    5.1. [Initial code for the project](#51-initial-code-for-the-project)<br/>
+    5.2. [Creating the Dockerfile](#52-creating-the-dockerfile)<br/>
 
-
+___
 ## 1. Why use Docker?
 
 Docker wants to make it really easy and really straightforward for you to install and run software on any given 
 computer. 
-
+___
 ## 2. Introduction to Docker
 
 Docker is a platform or ecosystem around creating and running containers. The ecosystem includes:
@@ -62,7 +65,7 @@ image that runs a program. The container is isolated from the main operating sys
 
 **Note:** Containers can only exist on Linux. So, when you install docker on your system, you are actually installing a Linux
 VM if you are not using Linux as OS.
-
+___
 ## 3. Using the Docker Client
 
 The **docker client** provides us with the `docker` cli command. You can run `docker` on the command line to see the list
@@ -598,7 +601,7 @@ the flags as `-it` as well.
 The above command would run the bash terminal inside the container. Form there, you can run commands inside the bash terminal
 attached to run any commands you like. Make sure you use the `-it` flag. The `-i` flags connects the STDIN channel to your
 terminal. And, the `-t` flag makes the STDIN channel more pretty and readable.
-
+___
 ## 4. Creating Docker Image
 
 For creating a docker image, we create a plain text file called a `Dockerfile`. Notice that it has no extension. It's just
@@ -723,7 +726,118 @@ docker id, followed by image name and version. You can tag the image using the c
 
 Note: Technically the version on the end is the tag. the `docker-id` and `image-name` are what uniquely identifies the 
 image. During `run` or `create`, if you do not specify a version, by default the `latest` version would be installed.  
+___
+## 5. Making a real world project in docker
 
+We are going to create a Node.js express server image in docker in this project. We'll learn about creating a simple 
+`hello world` application for the node server.
+
+### 5.1. Initial Code for the project
+
+Create a folder called `nodejs-hello-world-image`. And, make the below files inside it.
+
+```
+nodejs-hello-world-image
+- Dockerfile
+- index.js
+- package.json
+```
+
+Now, add the following codes in each file.
+
+**File: index.js**
+```javascript
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res)=>{
+    res.end('Hello world!\n');
+    return;
+});
+
+app.listen(8080, ()=>{
+    console.log('successfully started app');
+});
+```
+
+**File: package.json**
+```json
+{
+  "dependencies": {
+    "express": "*"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+```
+
+After creating the above steps, you can run `npm start` on your computer to run the service. The service will be available
+at [https://localhost:8080](https://localhost:8080).
+
+### 5.2. Creating the `Dockerfile`
+
+Now, create the `Dockerfile`. We'll follow the same three steps to create the image. That is...
+
+```dockerfile
+# Use an exisitng docker image as a base
+
+# Download and install a dependency
+
+# Tell the image what to do when it starts as a container
+```
+
+For the initial part, let's add the code as we know from above.
+
+```dockerfile
+# Use an exisitng docker image as a base
+FROM alpine
+
+# Download and install a dependency
+RUN "npm install"
+
+# Tell the image what to do when it starts as a container
+CMD ["npm","start"]
+```
+
+Now, run `docker build .` in the folder. The output will be as follows:
+
+```
+suman@ubuntu-local:~/workspace/learning/node-server-image$ docker build .
+
+Sending build context to Docker daemon  2.032MB
+Step 1/3 : FROM alpine
+ ---> c059bfaa849c
+Step 2/3 : RUN "npm install"
+ ---> Running in 1d001a6be238
+/bin/sh: npm install: not found
+The command '/bin/sh -c "npm install"' returned a non-zero code: 127
+
+suman@ubuntu-local:~/workspace/learning/node-server-image$
+```
+
+We have done everything we know up to this point, but the image is not being created. If you look closely, we see that 
+the error is `/bin/sh: npm install: not found`. It is complaining that we don't have `npm` installed.
+
+What has happened here is that we are using the `alpine` image as a base. It doesn't have `nodejs` installed in it. So,
+we need to either install `nodejs` manually using `RUN` on `Dockerfile` or we need to choose a different image here that
+has `nodejs` pre-installed. We'll do the latter one as it is faster.
+
+Update your `Dockerfile` as below.
+
+```dockerfile
+# Select base image
+FROM node:alpine
+
+# Add dependencies
+RUN "npm install"
+
+# Create a startup command
+CMD ["npm","start"]
+```
+
+If we run `docker build .`, we still get error. We'll have to look into it in the next section.
 
 
 
