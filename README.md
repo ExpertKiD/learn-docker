@@ -29,6 +29,7 @@
 5. [Making a real world project in Docker](#5-making-a-real-world-project-in-docker)<br/>
     5.1. [Initial code for the project](#51-initial-code-for-the-project)<br/>
     5.2. [Creating the Dockerfile](#52-creating-the-dockerfile)<br/>
+    5.3. [Copying the project files to the image](#53-copying-the-project-files-to-the-image)<br/>
 
 ___
 ## 1. Why use Docker?
@@ -795,7 +796,7 @@ For the initial part, let's add the code as we know from above.
 FROM alpine
 
 # Download and install a dependency
-RUN "npm install"
+RUN npm install
 
 # Tell the image what to do when it starts as a container
 CMD ["npm","start"]
@@ -809,7 +810,7 @@ suman@ubuntu-local:~/workspace/learning/node-server-image$ docker build .
 Sending build context to Docker daemon  2.032MB
 Step 1/3 : FROM alpine
  ---> c059bfaa849c
-Step 2/3 : RUN "npm install"
+Step 2/3 : RUN npm install
  ---> Running in 1d001a6be238
 /bin/sh: npm install: not found
 The command '/bin/sh -c "npm install"' returned a non-zero code: 127
@@ -824,6 +825,8 @@ What has happened here is that we are using the `alpine` image as a base. It doe
 we need to either install `nodejs` manually using `RUN` on `Dockerfile` or we need to choose a different image here that
 has `nodejs` pre-installed. We'll do the latter one as it is faster.
 
+**Reference:** [Node | Docker](https://hub.docker.com/_/node/)
+
 Update your `Dockerfile` as below.
 
 ```dockerfile
@@ -831,7 +834,7 @@ Update your `Dockerfile` as below.
 FROM node:alpine
 
 # Add dependencies
-RUN "npm install"
+RUN npm install
 
 # Create a startup command
 CMD ["npm","start"]
@@ -839,29 +842,134 @@ CMD ["npm","start"]
 
 If we run `docker build .`, we still get error. We'll have to look into it in the next section.
 
+### 5.3. Copying the project files to the image
 
+**Error:**
+```
+suman@ubuntu-local:~/workspace/learning/node-server-image$ docker build .
 
+Sending build context to Docker daemon  2.032MB
+Step 1/3 : FROM node:alpine
+ ---> bb1fcdaff936
+Step 2/3 : RUN npm install
+ ---> Running in 086aab9fb0c0
+npm ERR! Tracker "idealTree" already exists
 
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /root/.npm/_logs/2021-12-17T12_49_46_157Z-debug.log
+The command '/bin/sh -c npm install' returned a non-zero code: 1
+```
 
+As the title suggests you may already know what has happened. But, let's look at this objectively. The image is just a 
+file snapshot of `alpine` with `nodejs` installed. However, we don't have the project files we made available in the image.
+So, we'll need to COPY the project files in the image. For this, we use the `COPY` command to copy files from our working
+directory in to the `docker image`.
 
+**Syntax:**
+``` 
+COPY [--chown=<user>:<group>] <src>... <dest>
+COPY [--chown=<user>:<group>] ["<src>",... "<dest>"] `
+```
 
+We use the second syntax if there are any whitespaces in `src` and/or `dest`. Now, let's update our `Dockerfile`. Add 
+`COPY ./ ./"
 
+```dockerfile
+# Select base image
+FROM node:alpine
 
+# Add dependencies
+WORKDIR peuconomia/node-server
 
+COPY ./ ./
 
+RUN npm install
 
+# Create a startup command
+CMD ["npm","start"]
+```
 
+The image will now be successfully built. Run `docker build -t peuconomia/node-web-app:latest .`. Notice that I'm tagging
+it so that our outputs match. And the output should be as follows:
 
+```
+Sending build context to Docker daemon  2.032MB
+Step 1/4 : FROM node:alpine
+ ---> bb1fcdaff936
+Step 2/4 : COPY ./ ./
+ ---> 7e951df8f06b
+Step 3/4 : RUN npm install
+ ---> Running in b06b6b01907c
 
+up to date, audited 51 packages in 2s
 
+2 packages are looking for funding
+  run `npm fund` for details
 
+found 0 vulnerabilities
+npm notice 
+npm notice New minor version of npm available! 8.1.4 -> 8.3.0
+npm notice Changelog: <https://github.com/npm/cli/releases/tag/v8.3.0>
+npm notice Run `npm install -g npm@8.3.0` to update!
+npm notice 
+Removing intermediate container b06b6b01907c
+ ---> 0a4dd8c46df9
+Step 4/4 : CMD ["npm","start"]
+ ---> Running in 7432f1a84ec3
+Removing intermediate container 7432f1a84ec3
+ ---> ca5e07bf421b
+Successfully built ca5e07bf421b
+Successfully tagged peuconomia/node-web-app:latest
+```
 
+You can then run `docker run peuconomia/node-web-app`. The output will be as follows:
 
- 
+```
+suman@ubuntu-local:~/workspace/learning/node-server-image$ docker run peuconomia/node-web-app
 
+> node-server-image@1.0.0 start
+> node index.js
 
+successfully started app
+```
 
+### 5.4. Accessing the application
 
+The container is now running. However, we get a nasty error when we try to browse [http://localhost:8080](http://localhost:8080).
+It's giving the error 404 i.e. `Resource not found`. This is because containers are isolated in nature. It is allowed to 
+make outgoing network requests. However, it needs to be configured to listen for incoming requests from outside the 
+container. For this, we need to perform `port mapping` in the container.
+
+### 5.5 Port mapping in the container
+
+We do not need to map outgoing ports at all as they are enabled by default. But, we do need to enable incoming ports. For
+this, we do not need to edit the project's `Dockerfile`. Instead, the port mapping is enabled when we run the container.
+We can map any port to any other port we like. 
+
+We add the port mapping in the `docker run` command.
+
+**Syntax:** `docker run -p [host-port]:[container-port] [image]`
+
+**Example:** `docker run -p 8080:8080 peuconomia/node-web-app`
+
+**Output:**
+
+```
+suman@ubuntu-pc:~/workspace/node-server-image$ docker run -p 8080:8080 peuconomia/node-web-app
+
+> start
+> node index.js
+
+successfully started app
+```
+
+**Output:** In another console, now run `curl http://localhost:8080` or open link in browser [http://localhost:8080](http://localhost:8080)
+```
+suman@ubuntu-pc:~$ curl http://localhost:8080
+Hello world!
+suman@ubuntu-pc:~$ 
+
+```
 
 
 
