@@ -21,7 +21,8 @@
         3.10.1 [Stopping using docker stop command](#3101-stopping-using-docker-stop-command)<br/>
         3.10.2 [Stopping using docker kill command](#3102-stopping-using-docker-kill-command)<br/>
     3.11 [Executing command in running container](#311-executing-command-in-running-container)<br/>
-4. [Creating Docker Image](#4-creating-docker-image)
+4. [Creating Docker Image](#4-creating-docker-image)<br/>
+    4.1. [Dockerfile in more detail](#41-dockerfile-in-more-detail)<br/>  
     
 
 ## 1. Why use Docker?
@@ -606,7 +607,7 @@ For creating a docker image, we create a plain text file called a `Dockerfile`. 
 
 Let's make a custom redis-server image to learn about `Dockerfile`.
 
-1. Create a folder called `redis-image`.\
+1. Create a folder called `redis-image`.
 2. Go into the folder and create a file called `Dockerfile`. `touch Dockerfile`.
 3. Edit the file and add the following lines. 
 
@@ -631,6 +632,41 @@ RUN apk add --update redis
 CMD ["redis-server"]
 ```
 We'll discuss what each command to later in more detail.
+
+### 4.1 Dockerfile in more detail
+
+Let's now examine this dockerfile in detail and understand how it's working.
+
+```dockerfile
+# Use an exisitng docker image as a base
+FROM alpine
+
+# Download and install a dependency
+RUN apk add --update redis
+
+# Tell the image what to do when it starts as a container
+CMD ["redis-server"]
+```
+
+**Initially,** a `Dockerfile` basically starts with an empty image. The first thing you need to do is get the OS installed. 
+We can choose from a multitude of OSes lies Ubuntu, Windows Server and so on. However, mostly we'll use `alpine` as the
+base OS or image. `alpine` is a minimal linux OS with low memory and storage footprint. It's small, simple and secure. A
+container requires no more than 8 MB and a minimal installation to disk requires around 130 MB of storage.
+
+Reference: [Alpine OS](https://alpinelinux.org/about/)
+
+So, first we set initial image to `alpine` using the command `FROM alpine`.
+
+**Secondly,** we install the dependencies in the `alpine` image we got using the alpine's package manager `apk`. To run 
+commands inside the image, we use the `RUN` command followed by the command to execute. For this example, we'll run 
+`RUN apk add --update redis`.
+
+**Finally,** we've got redis installed. Now, we need give the image the initial startup commands to execute. For this image,
+we will run the `redis-server` when starting the image. We use the `CMD` command to run the commands inside the container.
+Example run is `CMD ["redis-server"]`.
+
+
+
 
 
 
