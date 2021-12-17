@@ -25,6 +25,8 @@
     4.1. [Dockerfile in more detail](#41-dockerfile-in-more-detail)<br/>
     4.2. [Building the image](#42-building-the-image)<br/>
     4.3. [Running the created image](#43-running-the-created-image)<br/>
+    4.4. [Tagging the image](#44-tagging-the-image)<br/>
+
 
 ## 1. Why use Docker?
 
@@ -696,6 +698,7 @@ Step 3/3 : CMD ["redis-server"]
 Removing intermediate container aae2301b8224
  ---> 056a5d56432d
 Successfully built 056a5d56432d
+
 suman@ubuntu-local:~/workspace/learning/redis-image$
 ```
 The image is now built and in the last line we'll get the docker image id i.e. `056a5d56432d`. What `docker build` does 
@@ -710,6 +713,18 @@ id is then forwarded to the user on the console with the message `Successfully b
 
 We can now create the container using the container id using the command `docker run 056a`. It's the same as running any
 container.
+
+### 4.4. Tagging the image
+
+We can tag an image with a *tag* which is a concatenation of `[docker-id]/[image-name]:[version]`. It simply contains your
+docker id, followed by image name and version. You can tag the image using the command `docker build -t tag .`. 
+
+**Example:** `docker build peuconomia/redis:latest .`
+
+Note: Technically the version on the end is the tag. the `docker-id` and `image-name` are what uniquely identifies the 
+image. During `run` or `create`, if you do not specify a version, by default the `latest` version would be installed.  
+
+
 
 
 
