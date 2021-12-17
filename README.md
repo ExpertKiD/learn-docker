@@ -21,6 +21,7 @@
         3.10.1 [Stopping using docker stop command](#3101-stopping-using-docker-stop-command)<br/>
         3.10.2 [Stopping using docker kill command](#3102-stopping-using-docker-kill-command)<br/>
     3.11 [Executing command in running container](#311-executing-command-in-running-container)<br/>
+4. [Creating Docker Image](#4-creating-docker-image)
     
 
 ## 1. Why use Docker?
@@ -593,6 +594,43 @@ the flags as `-it` as well.
 The above command would run the bash terminal inside the container. Form there, you can run commands inside the bash terminal
 attached to run any commands you like. Make sure you use the `-it` flag. The `-i` flags connects the STDIN channel to your
 terminal. And, the `-t` flag makes the STDIN channel more pretty and readable.
+
+## 4. Creating Docker Image
+
+For creating a docker image, we create a plain text file called a `Dockerfile`. Notice that it has no extension. It's just
+`Dockerfile`; the case is sensitive. For each docker file, we will follow the three steps as shown in the below image.
+
+![Docker Compose Flow](images/docker-compose-flow.png)
+
+**Example:**
+
+Let's make a custom redis-server image to learn about `Dockerfile`.
+
+1. Create a folder called `redis-image`.\
+2. Go into the folder and create a file called `Dockerfile`. `touch Dockerfile`.
+3. Edit the file and add the following lines. 
+
+```dockerfile
+# Use an exisitng docker image as a base
+
+# Download and install a dependency
+
+# Tell the image what to do when it starts as a container
+```
+
+4. Now paste in the code for the `redis-server` image.
+
+```dockerfile
+# Use an exisitng docker image as a base
+FROM alpine
+
+# Download and install a dependency
+RUN apk add --update redis
+
+# Tell the image what to do when it starts as a container
+CMD ["redis-server"]
+```
+We'll discuss what each command to later in more detail.
 
 
 
