@@ -30,6 +30,9 @@
     5.1. [Initial code for the project](#51-initial-code-for-the-project)<br/>
     5.2. [Creating the Dockerfile](#52-creating-the-dockerfile)<br/>
     5.3. [Copying the project files to the image](#53-copying-the-project-files-to-the-image)<br/>
+    5.4. [Accessing the application](#54-accessing-the-application)<br/>
+    5.5. [Port mapping in the container](#55-port-mapping-in-the-container)<br/>
+    5.6. [Working with the Work Directory](#56-working-with-the-work-directory)<br/>
 
 ___
 ## 1. Why use Docker?
@@ -879,8 +882,6 @@ We use the second syntax if there are any whitespaces in `src` and/or `dest`. No
 FROM node:alpine
 
 # Add dependencies
-WORKDIR peuconomia/node-server
-
 COPY ./ ./
 
 RUN npm install
@@ -971,6 +972,31 @@ suman@ubuntu-pc:~$
 
 ```
 
+### 5.6. Working with the Work Directory
+
+By default, the working directory on a container is set to `/`. We can specify the work directory using the `WORKDIR` \
+command. It will be the default directory where the commands like `COPY`, `ADD`,`RUN` and so on will work.
+
+**Reference:** [WORKDIR | Docker Reference](https://docs.docker.com/engine/reference/builder/#workdir)
+
+**Syntax:** `WORKDIR [directory]`
+
+Let's create a work directory in the image now.
+
+```dockerfile
+# Select base image
+FROM node:alpine
+
+# Add dependencies
+WORKDIR peuconomia/node-server
+
+COPY ./ ./
+
+RUN npm install
+
+# Create a startup command
+CMD ["npm","start"]
+```
 
 
 

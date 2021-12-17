@@ -4,10 +4,11 @@ FROM node:alpine
 # Add dependencies
 WORKDIR /peuconomia/node-server
 
-COPY ./ ./
+COPY ./package.json ./
 
-#WORKDIR ./code
 RUN npm install
+
+COPY ./ ./
 
 # Create a startup command
 CMD ["npm","start"]
