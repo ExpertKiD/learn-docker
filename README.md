@@ -22,8 +22,9 @@
         3.10.2 [Stopping using docker kill command](#3102-stopping-using-docker-kill-command)<br/>
     3.11 [Executing command in running container](#311-executing-command-in-running-container)<br/>
 4. [Creating Docker Image](#4-creating-docker-image)<br/>
-    4.1. [Dockerfile in more detail](#41-dockerfile-in-more-detail)<br/>  
-    
+    4.1. [Dockerfile in more detail](#41-dockerfile-in-more-detail)<br/>
+    4.2. [Building the image](#42-building-the-image)<br/>
+    4.3. [Running the created image](#43-running-the-created-image)<br/>
 
 ## 1. Why use Docker?
 
@@ -664,6 +665,55 @@ commands inside the image, we use the `RUN` command followed by the command to e
 **Finally,** we've got redis installed. Now, we need give the image the initial startup commands to execute. For this image,
 we will run the `redis-server` when starting the image. We use the `CMD` command to run the commands inside the container.
 Example run is `CMD ["redis-server"]`.
+
+### 4.2. Building the image
+
+Now that the `Dockerfile` file has been created, we'll build the image.
+
+1. Go inside the folder where the `Dockerfile` is located.
+2. Now run the command `docker build .`.
+3. The image is now being built.
+
+```
+suman@ubuntu-local:~/workspace/learning/redis-image$ docker build .
+
+Sending build context to Docker daemon  2.048kB
+Step 1/3 : FROM alpine
+ ---> c059bfaa849c
+Step 2/3 : RUN apk add --update redis
+ ---> Running in 84b0ee9d44fa
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.15/main/x86_64/APKINDEX.tar.gz
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.15/community/x86_64/APKINDEX.tar.gz
+(1/1) Installing redis (6.2.6-r0)
+Executing redis-6.2.6-r0.pre-install
+Executing redis-6.2.6-r0.post-install
+Executing busybox-1.34.1-r3.trigger
+OK: 8 MiB in 15 packages
+Removing intermediate container 84b0ee9d44fa
+ ---> c38631a59dbf
+Step 3/3 : CMD ["redis-server"]
+ ---> Running in aae2301b8224
+Removing intermediate container aae2301b8224
+ ---> 056a5d56432d
+Successfully built 056a5d56432d
+suman@ubuntu-local:~/workspace/learning/redis-image$
+```
+The image is now built and in the last line we'll get the docker image id i.e. `056a5d56432d`. What `docker build` does 
+is it creates intermediate containers running each command one after the another in each previous or initial image, then
+it takes the file snapshot of the current image. 
+
+It runs the next command and builds the new file snapshot until the very
+last command is executed. The final snapshot is taken and then a new image is created with that file snapshot. The image
+id is then forwarded to the user on the console with the message `Successfully built 056a5d56432d` as seen above.
+
+### 4.3. Running the created image
+
+We can now create the container using the container id using the command `docker run 056a`. It's the same as running any
+container.
+
+
+
+
 
 
 
