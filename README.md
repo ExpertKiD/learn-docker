@@ -1019,18 +1019,25 @@ const express = require("express");
 const redis = require("redis");
 
 const app = express();
-const client = redis.createClient();
-client.set('visits', 0);
-
-app.get('/', (req,res)=>{
-    client.get('visits', (err, visits)=>{
-       res.send('Number of visits is '+ visits);
-       client.set('visits', parseInt(visits) + 1);
-    });
+const client = redis.createClient({
+    url: "redis://redis-server:6379"
 });
 
-app.listen(8081, ()=>{
-   console.log("Listening on port 8081");
+client.connect().then(r => console.log("Connected to redis"));
+
+client.set('visits', 0);
+
+app.get('/', async (req, res) => {
+    let visits = await client.get('visits');
+
+    visits = parseInt(visits) + 1;
+    await client.set('visits', visits) ;
+
+    res.send(`Number of visits is  ${visits}`);
+});
+
+app.listen(8081, () => {
+    console.log("Listening on port 8081");
 });
 ```
 
@@ -1083,8 +1090,31 @@ communicate with each other. We can communicate with the container in one of two
 
 `Docker Compose` is a separate CLI that gets installed with Docker. It is used to start up multiple containers at the 
 same time. It automates some long-winded arguments we are passing to `docker run`. The purpose of `docker-compose` is to
-essentially function as Docker CLI but allow you to kind of issue multiple commands much more quickly.  
+essentially function as Docker CLI but allow you to kind of issue multiple commands much more quickly. The configuration 
+filename is `docker-compose.yml`. The CLI command is `docker-compose`.
 
+**File:** `docker-compose.yml`
+```yaml
+version: '3.9'
+services:
+  node-app:
+    build: .
+    ports:
+      - '4001:8081'
+    depends_on:
+      - redis-server
+  redis-server:
+    image: 'redis:latest'
+```
+
+The above is the `docker-compose.yml` file required for our application. Create a file named `docker-compose.yml` and 
+write the above lines in it. The `version` specifies the version for the Docker compose file. `services` referes to the 
+containers. All the `services` made here are shared under the same network unless you specify `network` for each 
+service/container. You can either specify the `image` to be used for the service or use `build` and specify it the 
+location to the Dockerfile to be used to generate the image.
+
+To start the containers, you can run `docker-compose up --build`. And, for shutting down the container, you can run 
+`docker-compose down`. Up to start the container and down to stop the containers.
 
 
 
