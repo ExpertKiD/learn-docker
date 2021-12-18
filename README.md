@@ -997,6 +997,60 @@ RUN npm install
 # Create a startup command
 CMD ["npm","start"]
 ```
+---
+## 6. Docker Compose with multiple local containers
+
+In this section, we are going to create a local node web server application that will count the number of times the user 
+has visited the site. We'll make use of two containers: one for `node` for hosting our application and another for `redis`
+to store the number of times the user has visited our site.
+
+### 6.1. Initial Codes for the application
+
+Make a folder called `node-visit-count-app` and inside make two new files: `index.js` and `package.json`.
+
+
+**File:** `index.js`
+```javascript
+const express = require("express");
+const redis = require("redis");
+
+const app = express();
+const client = redis.createClient();
+client.set('visits', 0);
+
+app.get('/', (req,res)=>{
+    client.get('visits', (err, visits)=>{
+       res.send('Number of visits is '+ visits);
+       client.set('visits', parseInt(visits) + 1);
+    });
+});
+
+app.listen(8081, ()=>{
+   console.log("Listening on port 8081");
+});
+```
+
+**File:** `package.json`
+
+```json
+{
+  "dependencies": {
+    "express": "*",
+    "redis": "^4.0.1"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+```
+
+### 6.2. Creating the Docker file for node web application
+
+
+
+
+
+
 
 
 
