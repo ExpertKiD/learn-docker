@@ -33,7 +33,11 @@
     5.4. [Accessing the application](#54-accessing-the-application)<br/>
     5.5. [Port mapping in the container](#55-port-mapping-in-the-container)<br/>
     5.6. [Working with the Work Directory](#56-working-with-the-work-directory)<br/>
-
+6. [Docker Compose with multiple local containers](#6-docker-compose-with-multiple-local-containers)<br/>
+    6.1. [Initial code for the project](#61-initial-codes-for-the-application)<br/>
+    6.2. [Creating the Dockerfile for node web application](#62-creating-the-docker-file-for-node-web-application)<br/>
+    6.3. [Running the redis instance](#63-running-the-redis-instance)<br/>
+    6.4. [Introducing Docker Compose](#64introducing-docker-compose)<br/>
 ___
 ## 1. Why use Docker?
 
@@ -1045,6 +1049,41 @@ app.listen(8081, ()=>{
 ```
 
 ### 6.2. Creating the Docker file for node web application
+
+Add the following code to the node folder.
+
+```Dockerfile
+# Select base image
+FROM node:alpine
+
+# Add dependencies
+WORKDIR /peuconomia/node-server
+
+COPY package.json .
+RUN npm install
+COPY . .
+
+# Create a startup command
+CMD ["npm","start"]
+```
+
+Then, build the image using `docker build -t peuconomia/visits:latests .`.
+
+### 6.3. Running the Redis instance
+
+For `redis` container, we'll just do `docker run redis`.
+
+The problem we now have is that the two containers are completely isolated. We have to allow the two containers to 
+communicate with each other. We can communicate with the container in one of two ways:
+
+1. Use Docker CLI's Network features - Very tedious
+2. Use Docker Compose
+
+### 6.4.Introducing Docker Compose
+
+`Docker Compose` is a separate CLI that gets installed with Docker. It is used to start up multiple containers at the 
+same time. It automates some long-winded arguments we are passing to `docker run`. The purpose of `docker-compose` is to
+essentially function as Docker CLI but allow you to kind of issue multiple commands much more quickly.  
 
 
 
